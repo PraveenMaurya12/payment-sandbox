@@ -1,0 +1,30 @@
+# One-click deploy on Render (https://render.com).
+#   Dashboard → New → Blueprint → pick this repo → provide the prompted values.
+# Real secret values are NEVER committed here; sync:false means "prompt in the dashboard".
+services:
+  - type: web
+    name: payment-sandbox
+    runtime: docker            # builds from the Dockerfile in this repo
+    plan: free                 # free tier spins down after ~15 min idle (cold start on next hit)
+    region: singapore          # closest region to India; change if you prefer another
+    healthCheckPath: /healthz
+    autoDeploy: true           # redeploy automatically on every push to the linked branch
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "true"
+      # ── You'll be prompted for these during the Blueprint creation flow ──
+      - key: EVERVAULT_API_KEY
+        sync: false
+      - key: EVERVAULT_APP_ID
+        sync: false
+      - key: EVERVAULT_TEAM_ID
+        sync: false
+      - key: CHECKOUT_SECRET_KEY
+        sync: false
+      - key: CHECKOUT_BASE_URL
+        sync: false
+    # Optional: for persistent history, create a Render Postgres and add a
+    # DATABASE_URL env var in the dashboard (Environment tab). Left unset =
+    # zero-config in-memory history (resets on each restart/redeploy).

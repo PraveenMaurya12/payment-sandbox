@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="description" content="A hosted 3-D Secure + card payment simulator built on the Evervault and Checkout.com sandboxes. No real payments, no logins, no card data stored." />
+  <title>Payment Sandbox — 3DS + Checkout.com demo</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🔐</div>
+      <div class="logo-text">Payment Sandbox <span>/ 3DS · Checkout.com sandbox</span></div>
+    </div>
+    <div class="flow-steps">
+      <div class="flow-step active" id="step-1"><div class="step-num">1</div>Configure</div>
+      <div class="flow-arrow"></div>
+      <div class="flow-step" id="step-2"><div class="step-num">2</div>3DS Auth</div>
+      <div class="flow-arrow"></div>
+      <div class="flow-step" id="step-3"><div class="step-num">3</div>Authorize</div>
+      <div class="flow-arrow"></div>
+      <div class="flow-step" id="step-4"><div class="step-num">4</div>Capture</div>
+      <div class="flow-arrow"></div>
+      <div class="flow-step" id="step-5"><div class="step-num">5</div>Settle</div>
+    </div>
+    <div class="header-right">
+      <div class="server-badge"><div class="pulse" id="server-dot"></div><span id="server-label">connecting…</span></div>
+      <button class="btn-header" data-action="reset">↺ Reset</button>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-scroll">
+        <div class="sandbox-note">
+          <span class="sandbox-note-icon">🧪</span>
+          <span class="sandbox-note-text">
+            <strong>Sandbox only.</strong> This runs against the Evervault and Checkout.com
+            test environments. No real money moves. Use the test cards below — never a real card.
+          </span>
+        </div>
+
+        <div class="acc-section">
+          <div class="acc-header open" data-action="toggle-acc">
+            <span class="acc-header-icon">💳</span>
+            <span class="acc-header-label">Test Cards</span>
+            <span class="acc-chevron">▾</span>
+          </div>
+          <div class="acc-body open">
+            <div class="card-grid">
+              <div class="test-card selected" data-number="4111110116638870"><div class="card-num">4111 1101<br>1663 8870</div><div class="card-network">Visa</div><div class="card-badge badge-frictionless-ok">Frictionless ✓</div></div>
+              <div class="test-card" data-number="5555550130659057"><div class="card-num">5555 5501<br>3065 9057</div><div class="card-network">Mastercard</div><div class="card-badge badge-frictionless-ok">Frictionless ✓</div></div>
+              <div class="test-card" data-number="4242424242424242"><div class="card-num">4242 4242<br>4242 4242</div><div class="card-network">Visa</div><div class="card-badge badge-challenge">Challenge</div></div>
+              <div class="test-card" data-number="5555555555554444"><div class="card-num">5555 5555<br>5555 4444</div><div class="card-network">Mastercard</div><div class="card-badge badge-challenge">Challenge</div></div>
+              <div class="test-card" data-number="4111111738973695"><div class="card-num">4111 1117<br>3897 3695</div><div class="card-network">Visa</div><div class="card-badge badge-frictionless-fail">Fails ✗</div></div>
+              <div class="test-card" data-number="5555550487847545"><div class="card-num">5555 5504<br>8784 7545</div><div class="card-network">Mastercard</div><div class="card-badge badge-frictionless-fail">Fails ✗</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-section">
+          <div class="acc-header open" data-action="toggle-acc">
+            <span class="acc-header-icon">🗒️</span>
+            <span class="acc-header-label">Card Details</span>
+            <span class="acc-chevron">▾</span>
+          </div>
+          <div class="acc-body open">
+            <div class="field"><label>Card number</label><input type="text" id="card-number" value="4111110116638870" maxlength="19" inputmode="numeric" autocomplete="off" /></div>
+            <div class="field-row3">
+              <div class="field"><label>Month</label><input type="text" id="exp-month" value="09" maxlength="2" inputmode="numeric" /></div>
+              <div class="field"><label>Year</label><input type="text" id="exp-year" value="26" maxlength="4" inputmode="numeric" /></div>
+              <div class="field"><label>CVV</label><input type="text" id="cvv" value="100" maxlength="4" inputmode="numeric" autocomplete="off" /></div>
+            </div>
+            <div class="field-note">Use a Checkout.com <a href="https://www.checkout.com/docs/testing/test-cards" target="_blank" rel="noopener">sandbox test card</a>. No card data is ever stored.</div>
+          </div>
+        </div>
+
+        <div class="acc-section">
+          <div class="acc-header" data-action="toggle-acc">
+            <span class="acc-header-icon">🏪</span>
+            <span class="acc-header-label">Merchant</span>
+            <span class="acc-chevron">▾</span>
+          </div>
+          <div class="acc-body">
+            <div class="field"><label>Business name</label><input type="text" id="merchant-name" value="Ollivanders Wand Shop" /></div>
+            <div class="field"><label>Website</label><input type="text" id="merchant-website" value="https://www.ollivanders.co.uk" /></div>
+            <div class="field-row">
+              <div class="field"><label>Country <span class="field-hint">ISO 2</span></label><input type="text" id="merchant-country" value="ie" maxlength="2" /></div>
+              <div class="field"><label>MCC</label><input type="text" id="merchant-mcc" value="5945" maxlength="4" inputmode="numeric" /></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-section">
+          <div class="acc-header open" data-action="toggle-acc">
+            <span class="acc-header-icon">💰</span>
+            <span class="acc-header-label">Payment</span>
+            <span class="acc-chevron">▾</span>
+          </div>
+          <div class="acc-body open">
+            <div class="field">
+              <label>Capture mode</label>
+              <div class="mode-toggle">
+                <div class="mode-btn" id="mode-auth-capture" data-action="set-capture" data-mode="capture">⚡ Auth &amp; capture</div>
+                <div class="mode-btn active" id="mode-auth-only" data-action="set-capture" data-mode="auth-only">🔒 Auth only</div>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label>Amount <span class="field-hint">minor units</span></label><input type="number" id="amount" value="1000" /></div>
+              <div class="field"><label>Currency</label><input type="text" id="currency" value="EUR" maxlength="3" /></div>
+            </div>
+            <div style="font-size:9px;color:var(--text3);margin-top:-4px;line-height:1.5">1000 = €10.00 · 10000 = €100.00</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="btn-run" id="run-btn" data-action="run-flow"><span>▶</span> Run 3DS flow</button>
+        <button class="btn-reset" data-action="reset">↺ Reset all</button>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <div class="tab-bar">
+        <div class="tab active" id="tab-flow" data-action="switch-tab" data-tab="flow">🔄 Flow <span class="tab-badge" id="tab-flow-badge"></span></div>
+        <div class="tab" id="tab-activity" data-action="switch-tab" data-tab="activity">📋 Activity <span class="tab-badge" id="log-count">0</span></div>
+        <div class="tab" id="tab-history" data-action="switch-tab" data-tab="history">📊 History <span class="tab-badge" id="tab-history-badge"></span></div>
+        <div class="tab-status">
+          <div class="spin" id="poll-spin"></div>
+          <span id="poll-label" style="font-size:10px;color:var(--text3)"></span>
+          <div class="status-chip idle" id="status-pill">IDLE</div>
+        </div>
+      </div>
+
+      <div class="tab-panels">
+        <!-- FLOW -->
+        <div class="tab-panel active" id="panel-flow">
+          <div class="flow-panel">
+            <div class="stage highlighted" id="stage-auth">
+              <div class="stage-header">
+                <div class="stage-num">1</div>
+                <div class="stage-title">3DS authentication</div>
+                <span class="stage-badge info" id="auth-stage-badge" style="display:none"></span>
+              </div>
+              <div class="stage-body">
+                <div id="sdk-modal-notice" class="sdk-notice">
+                  <div class="sdk-notice-icon">🔐</div>
+                  <div class="sdk-notice-title">Authentication in progress</div>
+                  <div class="sdk-notice-sub">Complete the 3DS challenge in the secure overlay.<br>This panel updates automatically.</div>
+                </div>
+                <div id="auth-result-area" style="display:none">
+                  <div class="auth-result-header">
+                    <div class="auth-icon ok" id="auth-result-icon">✅</div>
+                    <div><div class="auth-label" id="auth-result-label">Authenticated</div><div class="auth-sub" id="auth-result-sub">Session completed successfully</div></div>
+                  </div>
+                  <div class="result-grid" id="result-rows"></div>
+                </div>
+                <div class="empty-hint" id="auth-empty"><div class="hint-icon">🔐</div>Click <strong>Run 3DS flow</strong> to start authentication.<br>The Evervault SDK handles device fingerprinting &amp; any challenge.</div>
+              </div>
+            </div>
+
+            <button class="btn-authorize" id="authorize-btn" data-action="authorize">⚡ Authorize payment via Checkout.com</button>
+
+            <div class="stage" id="stage-pay" style="display:none">
+              <div class="stage-header"><div class="stage-num">2</div><div class="stage-title">Authorization</div><span class="pay-badge authorized" id="payment-badge">AUTHORIZED</span></div>
+              <div class="stage-body"><div class="result-grid" id="payment-rows"></div></div>
+            </div>
+
+            <div class="stage" id="stage-capture" style="display:none">
+              <div class="stage-header"><div class="stage-num">3</div><div class="stage-title">Capture / void</div></div>
+              <div class="stage-body">
+                <div class="action-panel visible" id="capture-panel">
+                  <div class="action-panel-title">💳 Capture payment</div>
+                  <div class="action-field-row"><div class="field"><label>Capture amount <span class="field-hint">minor units · blank = full</span></label><input type="number" id="capture-amount" placeholder="Full capture" /></div></div>
+                  <button class="btn-action capture" id="capture-btn" data-action="capture">Capture payment</button>
+                  <button class="btn-action void-btn" id="void-btn" data-action="void">✕ Void — cancel without charging</button>
+                  <div class="action-result" id="capture-result"><div id="capture-result-rows"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="stage" id="stage-refund" style="display:none">
+              <div class="stage-header"><div class="stage-num">4</div><div class="stage-title">Refund</div></div>
+              <div class="stage-body">
+                <div class="action-panel visible" id="refund-panel">
+                  <div class="action-panel-title">↩ Issue refund</div>
+                  <div class="action-field-row">
+                    <div class="field"><label>Amount <span class="field-hint">minor units · blank = full</span></label><input type="number" id="refund-amount" placeholder="Full refund" /></div>
+                    <div class="field"><label>Reason <span class="field-hint">optional</span></label><input type="text" id="refund-reason" placeholder="e.g. customer request" /></div>
+                  </div>
+                  <button class="btn-action refund" id="refund-btn" data-action="refund">Issue refund</button>
+                  <div class="action-result" id="refund-result"><div id="refund-result-rows"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="stage" id="stage-status" style="display:none">
+              <div class="stage-header">
+                <div class="stage-num">5</div><div class="stage-title">Payment status</div>
+                <button class="btn-ghost" style="margin-left:auto" data-action="refresh-status">⟳ Refresh</button>
+              </div>
+              <div class="stage-body">
+                <div class="balance-row" id="balance-grid"></div>
+                <div class="timeline" id="action-list"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACTIVITY -->
+        <div class="tab-panel" id="panel-activity">
+          <div class="activity-panel">
+            <div class="log-area" id="log-area">
+              <div id="log-empty" style="text-align:center;padding:40px 20px;color:var(--text3)"><div style="font-size:24px;margin-bottom:8px;opacity:.4">◈</div>Activity will appear here when you run a flow.</div>
+            </div>
+            <div class="json-viewer">
+              <div class="json-header"><span class="json-label">Last API response</span><span class="json-ts" id="json-ts"></span></div>
+              <div class="json-body" id="json-area"><div style="color:var(--text3);font-size:11px;padding:10px 0">No response yet.</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HISTORY -->
+        <div class="tab-panel" id="panel-history">
+          <div class="history-shell">
+            <div class="history-bar">
+              <div class="history-bar-left">
+                <div>
+                  <div class="history-title">Transaction history</div>
+                  <div class="history-sub">This browser only · safe metadata · no card data stored</div>
+                </div>
+              </div>
+              <div class="history-actions">
+                <button class="btn-ghost" data-action="export-history">⬇ Export CSV</button>
+                <button class="btn-ghost" data-action="refresh-history">⟳ Refresh</button>
+              </div>
+            </div>
+            <div class="history-metrics">
+              <div class="hm m-count"><div class="hm-label">Transactions</div><div class="hm-value" id="hm-count">0</div></div>
+              <div class="hm m-approved"><div class="hm-label">Approved</div><div class="hm-value" id="hm-approved">0</div></div>
+              <div class="hm m-volume"><div class="hm-label">Volume</div><div class="hm-value" id="hm-volume">—</div></div>
+            </div>
+            <div class="history-scroll" id="history-scroll">
+              <table class="tx-table" id="tx-table" style="display:none">
+                <thead><tr><th>Card</th><th>Amount</th><th>Status</th><th>3DS</th><th class="right">When</th></tr></thead>
+                <tbody id="tx-tbody"></tbody>
+              </table>
+              <div id="history-empty" class="history-empty">
+                <div class="history-empty-icon">◈</div>
+                <div class="history-empty-title">No transactions yet</div>
+                <div class="history-empty-sub">Run a 3DS flow and authorize a payment —<br>it shows up here, visible only in this browser.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <div>Payment Sandbox — a 3-D Secure &amp; card-payment demo on Evervault + Checkout.com sandboxes.</div>
+    <div>
+      <a href="#" id="link-github" target="_blank" rel="noopener">GitHub</a>
+      <span class="dot"> · </span>
+      <a href="#" id="link-linkedin" target="_blank" rel="noopener">LinkedIn</a>
+      <span class="dot"> · </span>
+      <span>Sandbox only — no real payments</span>
+    </div>
+  </footer>
+</body>
+</html>

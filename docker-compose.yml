@@ -1,0 +1,38 @@
+# Portable local/hosted setup.
+#
+#   Run the app only (in-memory history, zero config):
+#       docker compose up --build
+#
+#   Run with persistent Postgres history:
+#       1) in your .env, set:
+#            DATABASE_URL=postgres://sandbox:sandbox@db:5432/sandbox
+#       2) docker compose --profile db up --build
+#
+# Put your sandbox credentials in a .env file next to this one (see .env.example).
+
+services:
+  app:
+    build: .
+    ports:
+      - "${PORT:-3000}:3000"
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    restart: unless-stopped
+
+  # Optional database — only started with `--profile db`.
+  db:
+    image: postgres:16-alpine
+    profiles: ["db"]
+    environment:
+      POSTGRES_USER: sandbox
+      POSTGRES_PASSWORD: sandbox
+      POSTGRES_DB: sandbox
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  pgdata:
