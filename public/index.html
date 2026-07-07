@@ -18,6 +18,7 @@
     <div class="logo">
       <div class="logo-icon">🔐</div>
       <div class="logo-text">Payment Sandbox <span>/ 3DS · Checkout.com sandbox</span></div>
+      <span class="build-tag" id="build-tag">v3</span>
     </div>
     <div class="flow-steps">
       <div class="flow-step active" id="step-1"><div class="step-num">1</div>Configure</div>
@@ -274,5 +275,24 @@
       <span>Sandbox only — no real payments</span>
     </div>
   </footer>
+
+  <!-- 3-D Secure modal: the Evervault challenge mounts into #tds-frame -->
+  <div class="tds-modal" id="tds-modal" role="dialog" aria-modal="true" aria-label="Secure authentication">
+    <div class="tds-backdrop" data-action="cancel-3ds"></div>
+    <div class="tds-panel">
+      <div class="tds-head">
+        <span class="tds-title">🔒 Secure authentication</span>
+        <button class="tds-close" data-action="cancel-3ds" aria-label="Cancel authentication">✕</button>
+      </div>
+      <div class="tds-body">
+        <div class="tds-loading" id="tds-loading">
+          <div class="tds-spinner"></div>
+          <div class="tds-loading-text">Contacting your bank…</div>
+        </div>
+        <div class="tds-frame" id="tds-frame"></div>
+      </div>
+      <div class="tds-foot">Sandbox 3-D Secure · handled by Evervault</div>
+    </div>
+  </div>
 </body>
 </html>
