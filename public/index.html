@@ -11,14 +11,28 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/styles.css" />
-  <script src="/app.js" defer></script>
+  <style>
+    /* Failsafe (also in styles.css): guarantees the left control panel scrolls
+       so every field is reachable, even if a cached/old styles.css is served.
+       This is why the fix works the moment index.html deploys. */
+    .sidebar-scroll { display: block !important; }
+    .sidebar-scroll > * { flex-shrink: 0 !important; }
+    @media (min-width: 821px) {
+      .sidebar { display: flex !important; flex-direction: column !important; overflow: hidden !important; }
+      .sidebar-scroll { flex: 1 1 auto !important; min-height: 0 !important; overflow-y: auto !important; }
+    }
+    @media (max-width: 820px) {
+      .sidebar-scroll { max-height: 62vh !important; overflow-y: auto !important; }
+    }
+  </style>
+  <script src="/main.js" defer></script>
 </head>
 <body>
   <header>
     <div class="logo">
       <div class="logo-icon">🔐</div>
       <div class="logo-text">Payment Sandbox <span>/ 3DS · Checkout.com sandbox</span></div>
-      <span class="build-tag" id="build-tag">v3</span>
+      <span class="build-tag" id="build-tag">v7</span>
     </div>
     <div class="flow-steps">
       <div class="flow-step active" id="step-1"><div class="step-num">1</div>Configure</div>
@@ -49,25 +63,25 @@
         </div>
 
         <div class="acc-section">
-          <div class="acc-header open" data-action="toggle-acc">
+          <div class="acc-header open" data-action="toggle-acc" role="button" tabindex="0">
             <span class="acc-header-icon">💳</span>
             <span class="acc-header-label">Test Cards</span>
             <span class="acc-chevron">▾</span>
           </div>
           <div class="acc-body open">
             <div class="card-grid">
-              <div class="test-card selected" data-number="4111110116638870"><div class="card-num">4111 1101<br>1663 8870</div><div class="card-network">Visa</div><div class="card-badge badge-frictionless-ok">Frictionless ✓</div></div>
-              <div class="test-card" data-number="5555550130659057"><div class="card-num">5555 5501<br>3065 9057</div><div class="card-network">Mastercard</div><div class="card-badge badge-frictionless-ok">Frictionless ✓</div></div>
-              <div class="test-card" data-number="4242424242424242"><div class="card-num">4242 4242<br>4242 4242</div><div class="card-network">Visa</div><div class="card-badge badge-challenge">Challenge</div></div>
-              <div class="test-card" data-number="5555555555554444"><div class="card-num">5555 5555<br>5555 4444</div><div class="card-network">Mastercard</div><div class="card-badge badge-challenge">Challenge</div></div>
-              <div class="test-card" data-number="4111111738973695"><div class="card-num">4111 1117<br>3897 3695</div><div class="card-network">Visa</div><div class="card-badge badge-frictionless-fail">Fails ✗</div></div>
-              <div class="test-card" data-number="5555550487847545"><div class="card-num">5555 5504<br>8784 7545</div><div class="card-network">Mastercard</div><div class="card-badge badge-frictionless-fail">Fails ✗</div></div>
+              <div class="test-card selected" role="button" tabindex="0" data-number="4111110116638870"><div class="card-num">4111 1101<br>1663 8870</div><div class="card-network">Visa</div><div class="card-badge badge-frictionless-ok">Frictionless ✓</div></div>
+              <div class="test-card" role="button" tabindex="0" data-number="5555550130659057"><div class="card-num">5555 5501<br>3065 9057</div><div class="card-network">Mastercard</div><div class="card-badge badge-frictionless-ok">Frictionless ✓</div></div>
+              <div class="test-card" role="button" tabindex="0" data-number="4242424242424242"><div class="card-num">4242 4242<br>4242 4242</div><div class="card-network">Visa</div><div class="card-badge badge-challenge">Challenge</div></div>
+              <div class="test-card" role="button" tabindex="0" data-number="5555555555554444"><div class="card-num">5555 5555<br>5555 4444</div><div class="card-network">Mastercard</div><div class="card-badge badge-challenge">Challenge</div></div>
+              <div class="test-card" role="button" tabindex="0" data-number="4111111738973695"><div class="card-num">4111 1117<br>3897 3695</div><div class="card-network">Visa</div><div class="card-badge badge-frictionless-fail">Fails ✗</div></div>
+              <div class="test-card" role="button" tabindex="0" data-number="5555550487847545"><div class="card-num">5555 5504<br>8784 7545</div><div class="card-network">Mastercard</div><div class="card-badge badge-frictionless-fail">Fails ✗</div></div>
             </div>
           </div>
         </div>
 
         <div class="acc-section">
-          <div class="acc-header open" data-action="toggle-acc">
+          <div class="acc-header open" data-action="toggle-acc" role="button" tabindex="0">
             <span class="acc-header-icon">🗒️</span>
             <span class="acc-header-label">Card Details</span>
             <span class="acc-chevron">▾</span>
@@ -84,7 +98,7 @@
         </div>
 
         <div class="acc-section">
-          <div class="acc-header" data-action="toggle-acc">
+          <div class="acc-header" data-action="toggle-acc" role="button" tabindex="0">
             <span class="acc-header-icon">🏪</span>
             <span class="acc-header-label">Merchant</span>
             <span class="acc-chevron">▾</span>
@@ -100,7 +114,7 @@
         </div>
 
         <div class="acc-section">
-          <div class="acc-header open" data-action="toggle-acc">
+          <div class="acc-header open" data-action="toggle-acc" role="button" tabindex="0">
             <span class="acc-header-icon">💰</span>
             <span class="acc-header-label">Payment</span>
             <span class="acc-chevron">▾</span>
@@ -130,9 +144,9 @@
 
     <div class="workspace">
       <div class="tab-bar">
-        <div class="tab active" id="tab-flow" data-action="switch-tab" data-tab="flow">🔄 Flow <span class="tab-badge" id="tab-flow-badge"></span></div>
-        <div class="tab" id="tab-activity" data-action="switch-tab" data-tab="activity">📋 Activity <span class="tab-badge" id="log-count">0</span></div>
-        <div class="tab" id="tab-history" data-action="switch-tab" data-tab="history">📊 History <span class="tab-badge" id="tab-history-badge"></span></div>
+        <div class="tab active" id="tab-flow" data-action="switch-tab" role="button" tabindex="0" data-tab="flow">🔄 Flow <span class="tab-badge" id="tab-flow-badge"></span></div>
+        <div class="tab" id="tab-activity" data-action="switch-tab" role="button" tabindex="0" data-tab="activity">📋 Activity <span class="tab-badge" id="log-count">0</span></div>
+        <div class="tab" id="tab-history" data-action="switch-tab" role="button" tabindex="0" data-tab="history">📊 History <span class="tab-badge" id="tab-history-badge"></span></div>
         <div class="tab-status">
           <div class="spin" id="poll-spin"></div>
           <span id="poll-label" style="font-size:10px;color:var(--text3)"></span>
