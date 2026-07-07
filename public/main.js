@@ -159,7 +159,7 @@ async function init() {
     s.onload = () => {
       try {
         evervaultSDK = new Evervault(teamId, appId);
-        addLog("Evervault SDK loaded", "info");
+        addLog("3DS SDK loaded", "info");
       } catch (e) {
         addLog(`SDK init failed: ${e.message}`, "error");
       }
