@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
   <meta name="description" content="A hosted 3-D Secure + card payment simulator built on the Evervault and Checkout.com sandboxes. No real payments, no logins, no card data stored." />
-  <title>Payment Sandbox — 3DS + Checkout.com demo</title>
+  <title>Card Payment Sandbox</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,8 +31,8 @@
   <header>
     <div class="logo">
       <div class="logo-icon">🔐</div>
-      <div class="logo-text">Payment Sandbox <span>/ 3DS · Checkout.com sandbox</span></div>
-      <span class="build-tag" id="build-tag">v7</span>
+      <div class="logo-text">Payment Sandbox <span>/Authentication & Authorization</span></div>
+      <span class="build-tag" id="build-tag">v1</span>
     </div>
     <div class="flow-steps">
       <div class="flow-step active" id="step-1"><div class="step-num">1</div>Configure</div>
@@ -57,8 +57,7 @@
         <div class="sandbox-note">
           <span class="sandbox-note-icon">🧪</span>
           <span class="sandbox-note-text">
-            <strong>Sandbox only.</strong> This runs against the Evervault and Checkout.com
-            test environments. No real money moves. Use the test cards below — never a real card.
+            <strong>Sandbox only.</strong> This runs against the test environments. No real money moves. Use the test cards below — never a real card.
           </span>
         </div>
 
@@ -93,7 +92,7 @@
               <div class="field"><label>Year</label><input type="text" id="exp-year" value="26" maxlength="4" inputmode="numeric" /></div>
               <div class="field"><label>CVV</label><input type="text" id="cvv" value="100" maxlength="4" inputmode="numeric" autocomplete="off" /></div>
             </div>
-            <div class="field-note">Use a Checkout.com <a href="https://www.checkout.com/docs/testing/test-cards" target="_blank" rel="noopener">sandbox test card</a>. No card data is ever stored.</div>
+            <div class="field-note">sandbox test card</a>. No card data is ever stored.</div>
           </div>
         </div>
 
@@ -137,7 +136,7 @@
       </div>
 
       <div class="sidebar-footer">
-        <button class="btn-run" id="run-btn" data-action="run-flow"><span>▶</span> Run 3DS flow</button>
+        <button class="btn-run" id="run-btn" data-action="run-flow"><span>▶</span> Pay Now</button>
         <button class="btn-reset" data-action="reset">↺ Reset all</button>
       </div>
     </aside>
@@ -177,11 +176,11 @@
                   </div>
                   <div class="result-grid" id="result-rows"></div>
                 </div>
-                <div class="empty-hint" id="auth-empty"><div class="hint-icon">🔐</div>Click <strong>Run 3DS flow</strong> to start authentication.<br>The Evervault SDK handles device fingerprinting &amp; any challenge.</div>
+                <div class="empty-hint" id="auth-empty"><div class="hint-icon">🔐</div>Click <strong>Pay Now</strong> to start authentication.<br>The Evervault SDK handles device fingerprinting &amp; any challenge.</div>
               </div>
             </div>
 
-            <button class="btn-authorize" id="authorize-btn" data-action="authorize">⚡ Authorize payment via Checkout.com</button>
+            <button class="btn-authorize" id="authorize-btn" data-action="authorize">⚡ Authorize payment</button>
 
             <div class="stage" id="stage-pay" style="display:none">
               <div class="stage-header"><div class="stage-num">2</div><div class="stage-title">Authorization</div><span class="pay-badge authorized" id="payment-badge">AUTHORIZED</span></div>
@@ -280,12 +279,12 @@
   </div>
 
   <footer class="app-footer">
-    <div>Payment Sandbox — a 3-D Secure &amp; card-payment demo on Evervault + Checkout.com sandboxes.</div>
+    <div>Payment Sandbox — a 3-D Secure &amp; card-payment demo</div>
     <div>
-      <a href="#" id="link-github" target="_blank" rel="noopener">GitHub</a>
+      <!-- <a href="#" id="link-github" target="_blank" rel="noopener">GitHub</a>
       <span class="dot"> · </span>
       <a href="#" id="link-linkedin" target="_blank" rel="noopener">LinkedIn</a>
-      <span class="dot"> · </span>
+      <span class="dot"> · </span> -->
       <span>Sandbox only — no real payments</span>
     </div>
   </footer>

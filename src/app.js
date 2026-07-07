@@ -59,13 +59,15 @@ function createApp(deps = {}) {
   // Unmatched API routes → JSON 404 (before static, so /api never serves HTML).
   app.use("/api", notFound);
 
-  // Static frontend.
+  // Static frontend. Assets are revalidated on every load (cheap 304s via ETag)
+  // so a redeploy is reflected immediately instead of being masked by a stale
+  // cached bundle. Long-lived caching would need hashed filenames (a build step).
   app.use(
     express.static(PUBLIC_DIR, {
       index: "index.html",
-      setHeaders(res, filePath) {
-        if (filePath.endsWith("index.html")) res.setHeader("Cache-Control", "no-cache");
-        else res.setHeader("Cache-Control", "public, max-age=3600");
+      etag: true,
+      setHeaders(res) {
+        res.setHeader("Cache-Control", "no-cache");
       },
     })
   );

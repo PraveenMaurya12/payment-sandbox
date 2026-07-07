@@ -134,7 +134,7 @@ async function capture(paymentId, { amount, reference } = {}) {
   const body = { reference: ref };
   if (amount != null && amount !== "") body.amount = parseInt(amount, 10);
 
-  const { ok, status, data } = await ckoFetch(`/payments/${paymentId}/captures`, {
+  const { ok, status, data } = await ckoFetch(`/payments/${encodeURIComponent(paymentId)}/captures`, {
     method: "POST",
     body,
     reference: ref,
@@ -145,7 +145,7 @@ async function capture(paymentId, { amount, reference } = {}) {
 
 async function voidPayment(paymentId, { reference } = {}) {
   const ref = reference || `void_${Date.now()}`;
-  const { ok, status, data } = await ckoFetch(`/payments/${paymentId}/voids`, {
+  const { ok, status, data } = await ckoFetch(`/payments/${encodeURIComponent(paymentId)}/voids`, {
     method: "POST",
     body: { reference: ref },
     reference: ref,
@@ -160,7 +160,7 @@ async function refund(paymentId, { amount, reference, reason } = {}) {
   if (amount != null && amount !== "") body.amount = parseInt(amount, 10);
   if (reason) body.metadata = { reason: String(reason).slice(0, 255) };
 
-  const { ok, status, data } = await ckoFetch(`/payments/${paymentId}/refunds`, {
+  const { ok, status, data } = await ckoFetch(`/payments/${encodeURIComponent(paymentId)}/refunds`, {
     method: "POST",
     body,
     reference: ref,
@@ -172,8 +172,8 @@ async function refund(paymentId, { amount, reference, reason } = {}) {
 /** Live payment detail + action history + balances from Checkout.com. */
 async function getPayment(paymentId) {
   const [detail, actions] = await Promise.all([
-    ckoFetch(`/payments/${paymentId}`),
-    ckoFetch(`/payments/${paymentId}/actions`),
+    ckoFetch(`/payments/${encodeURIComponent(paymentId)}`),
+    ckoFetch(`/payments/${encodeURIComponent(paymentId)}/actions`),
   ]);
 
   if (!detail.ok) {

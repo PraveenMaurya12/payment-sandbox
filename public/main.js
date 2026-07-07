@@ -659,7 +659,7 @@ function resetAll(resetBtn = true) {
   el("auth-stage-badge").style.display = "none";
   const ab = el("authorize-btn");
   ab.classList.remove("visible");
-  ab.textContent = "⚡ Authorize payment via Checkout.com";
+  ab.textContent = "⚡ Authorize payment";
   ab.disabled = false;
   el("stage-pay").style.display = "none";
   el("stage-capture").style.display = "none";
