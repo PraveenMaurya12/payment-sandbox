@@ -142,7 +142,7 @@ function syntaxHighlight(json) {
 
 // ── Boot ──
 async function init() {
-  console.info("%c[payment-sandbox] UI build v7 (mobile-first)","color:#10b981");
+  console.info("%c[payment-sandbox] UI build v8 (final)","color:#10b981");
   setFlowStep(1);
   try {
     const res = await fetch("/api/config");
