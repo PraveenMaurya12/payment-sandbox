@@ -314,7 +314,13 @@
     /* Expandable action detail row */
     .tx-detail td { background: var(--surface2); padding: 0; }
     .tx-detail-inner { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
-    .tx-detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+    .tx-detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px 20px; }
+    /* Detail fields stack label over value so long refs/ids wrap cleanly here,
+       instead of being crushed by the flow panel's fixed 130px label width
+       (which left almost no room for the value → char-by-char wrapping). */
+    .tx-detail-grid .result-row { flex-direction: column; align-items: stretch; gap: 3px; padding: 0; border-bottom: none; }
+    .tx-detail-grid .result-row .rl { width: auto; flex-shrink: 1; font-size: 8.5px; text-transform: uppercase; letter-spacing: .05em; }
+    .tx-detail-grid .result-row .rv { word-break: normal; overflow-wrap: anywhere; line-height: 1.5; }
     .tx-actions-title { font-size: 9px; text-transform: uppercase; letter-spacing: .05em; color: var(--text3); margin-top: 2px; }
 
     /* History empty + loading states */
